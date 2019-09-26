@@ -1,4 +1,7 @@
-import { union } from '@ember/object/computed';
-import createMultiArrayHelper from '../-private/create-multi-array-helper';
+import { helper } from '@ember/component/helper';
 
-export default createMultiArrayHelper(union);
+export function union([...arrays]) {
+  return [...new Set([].concat(...arrays))];
+}
+
+export default helper(union);
