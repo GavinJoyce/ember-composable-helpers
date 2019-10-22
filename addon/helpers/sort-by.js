@@ -7,6 +7,7 @@ import { isEmpty, typeOf } from '@ember/utils';
 
 export default Helper.extend({
   compute(params) {
+    console.log('SORTBY', params);
     // slice params to avoid mutating the provided params
     let sortProps = params.slice();
     let array = sortProps.pop();
