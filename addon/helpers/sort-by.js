@@ -2,13 +2,12 @@ import { defineProperty } from '@ember/object';
 import { isArray as isEmberArray } from '@ember/array';
 import { sort } from '@ember/object/computed';
 import Helper from '@ember/component/helper';
-import { get } from '@ember/object';
-import { observer } from '@ember/object';
 import { set } from '@ember/object';
 import { isEmpty, typeOf } from '@ember/utils';
 
 export default Helper.extend({
   compute(params) {
+    console.log('SORTBY', params);
     // slice params to avoid mutating the provided params
     let sortProps = params.slice();
     let array = sortProps.pop();
@@ -18,14 +17,9 @@ export default Helper.extend({
       sortProps = firstSortProp;
     }
 
+    // TODO: can we / should we use variables instead of computed properties?
     set(this, 'array', array);
     set(this, 'sortProps', sortProps);
-
-    return get(this, 'content');
-  },
-
-  sortPropsDidChange: observer('sortProps', function() {
-    let sortProps = get(this, 'sortProps');
 
     if (isEmpty(sortProps)) {
       defineProperty(this, 'content', []);
@@ -36,9 +30,7 @@ export default Helper.extend({
     } else {
       defineProperty(this, 'content', sort('array', 'sortProps'));
     }
-  }),
 
-  contentDidChange: observer('content', function() {
-    this.recompute();
-  })
+    return this.content;
+  },
 });
